@@ -285,9 +285,12 @@ class GenerateQualityReports():
         for rule in pology['rules']:
             rules = rules + ' -s rfile:{0}{1}'.format(pology['rules-dir'], rule)
 
-        cmd = pology['command'].format(posieve, rules, po_transonly, html)
+        error = html + "error"
+        cmd = pology['command'].format(posieve, rules, po_transonly, html, error)
         os.system(cmd)
+        print(cmd)
         self._show_file_debug(html)
+        self._show_file_debug(error)
     
     def load_projects_from_json(self):
         projects = []
@@ -384,6 +387,7 @@ class GenerateQualityReports():
             try:
                 self.generate_report(os.path.join(source_dir, project))
             except Exception as e:
+                print("error in main")
                 print(e)
 
 
