@@ -262,6 +262,19 @@ class GenerateQualityReports():
         return True
 
 
+    def _show_file_debug(self, filename):
+        print(f"_show_file_debug {filename} - start")
+
+        idx = 0
+        with open(filename) as f:
+            lines = f.readlines()
+            for line in lines:
+                print(f"{idx} - {line}")
+                idx = idx + 1
+
+        print(f"_show_file_debug {filename} - end")
+
+
     def run_pology(self, pology, po_transonly, html):
         posieve = pology['python2'] + " " + pology['posieve']
 
@@ -274,6 +287,7 @@ class GenerateQualityReports():
 
         cmd = pology['command'].format(posieve, rules, po_transonly, html)
         os.system(cmd)
+        self._show_file_debug(html)
     
     def load_projects_from_json(self):
         projects = []
@@ -294,7 +308,7 @@ class GenerateQualityReports():
     def generate_report(self, source_dir):
 
         lt, pology = self.read_config()
-        logging.info("Source directory: " + source_dir)
+#        logging.info("Source directory: " + source_dir)
 
         report_filename = os.path.basename(os.path.normpath(source_dir)) + ".html"
 
@@ -362,9 +376,16 @@ class GenerateQualityReports():
         projects = self.load_projects_from_json()
         source_dir = self.read_parameters()
         logging.debug(f"Root source_dir {source_dir}")
-        with ThreadPoolExecutor(max_workers=4) as executor:
-            for project in projects:
-                executor.submit(self.generate_report, os.path.join(source_dir, project))
+#        with ThreadPoolExecutor(max_workers=4) as executor:
+#            for project in projects:
+#                executor.submit(self.generate_report, os.path.join(source_dir, project))
+
+        for project in projects:
+            try:
+                self.generate_report(os.path.join(source_dir, project))
+            except Exception as e:
+                print(e)
+
 
         s = 'Time used to generate quality reports: {0}'.format(datetime.datetime.now() - total_start_time)
         logging.info(s)
