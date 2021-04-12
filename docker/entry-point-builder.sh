@@ -45,7 +45,7 @@ else
 fi
 
 cd $DIR_TMT_GIT/
-mkdir cfg/projects/old && cp cfg/projects/GNOME* cfg/projects/old/ && rm cfg/projects/*.json && cp cfg/projects/old/* cfg/projects/
+mkdir cfg/projects/old && cp cfg/projects/Abi* cfg/projects/old/ && rm cfg/projects/*.json && cp cfg/projects/old/* cfg/projects/
 
 # Build
 cd $DIR_TMT_GIT/deployment 
